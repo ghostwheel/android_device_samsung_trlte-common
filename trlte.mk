@@ -129,14 +129,8 @@ PRODUCT_PACKAGES += \
     ValidityService
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/validityservice/etc/permissions/privapp-permissions-validityservice.xml:system/etc/permissions/privapp-permissions-validityservice.xml \
-    
-ifeq ($(filter trlte trltecan trlteduos trltespr trltetmo trlteusc trltevzw trltexx,$(TARGET_DEVICE)),)
-# FlipFlap
-PRODUCT_PACKAGES += \
-    FlipFlap
-endif
-    
+    $(LOCAL_PATH)/validityservice/etc/permissions/privapp-permissions-validityservice.xml:system/etc/permissions/privapp-permissions-validityservice.xml
+
 # Graphics
 PRODUCT_PACKAGES += \
     android.hardware.configstore@1.0-service \
@@ -157,7 +151,6 @@ PRODUCT_PACKAGES += \
     android.hardware.gnss@1.0-service.apq8084
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/flp.conf:$(TARGET_COPY_OUT_SYSTEM)/etc/flp.conf \
     $(LOCAL_PATH)/configs/gps.conf:$(TARGET_COPY_OUT_SYSTEM)/etc/gps.conf \
     $(LOCAL_PATH)/configs/izat.conf:$(TARGET_COPY_OUT_SYSTEM)/etc/izat.conf \
     $(LOCAL_PATH)/configs/sap.conf:$(TARGET_COPY_OUT_SYSTEM)/etc/sap.conf
@@ -201,10 +194,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.light@2.0-impl \
     lights.APQ8084
-
-# LiveDisplay
-PRODUCT_PACKAGES += \
-    vendor.lineage.livedisplay@2.0-service.apq8084
 
 # Media
 PRODUCT_PACKAGES += \
@@ -317,10 +306,6 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/sensors/_hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/_hals.conf
-
-# Touch
-PRODUCT_PACKAGES += \
-    vendor.lineage.touch@1.0-service.samsung
 
 # Thermal engine
 PRODUCT_COPY_FILES += \
