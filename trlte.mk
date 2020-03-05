@@ -58,6 +58,7 @@ PRODUCT_PACKAGES += \
     libqcompostprocbundle \
     libqcomvoiceprocessing \
     libqcomvoiceprocessingdescriptors \
+    mixer_paths.xml \
     tinymix
 
 PRODUCT_COPY_FILES += \
