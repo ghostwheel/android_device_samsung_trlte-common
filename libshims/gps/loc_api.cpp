@@ -41,6 +41,7 @@ RETURN VALUE
 SIDE EFFECTS
    N/A
 ===========================================================================*/
+extern "C" {
 int _Z25loc_eng_nmea_put_checksumPci(char *pNmea, int maxSize)
 {
     u_int8_t checksum = 0;
@@ -60,10 +61,11 @@ int _Z25loc_eng_nmea_put_checksumPci(char *pNmea, int maxSize)
     // length of checksum (+1 is to cover the $ character in the length).
     return (length + checksumLength + 1);
 }
-
+}
 
 
 #include <sys/types.h>
+#include <string.h>
 
 
 // original function name: _ZNK16LocEngReportNmea4procEv
@@ -71,25 +73,30 @@ int _Z25loc_eng_nmea_put_checksumPci(char *pNmea, int maxSize)
 // https://github.com/18446744073709551615/reDroid/blob/master/hosttools/elfhash.c
 
 
-//extern "C" {
+ssize_t *LocEngReportNmea_constructor( ssize_t *thiz, void* locEng, const char* data, int len ) {
+    char *mNmea;
+    int iVar1;
+  
+    *(int32_t *)thiz = 0x33470;
+    *(void **)(thiz + 4) = locEng;
+  iVar1 = len;
+  mNmea = new char[len+1] ;
+  *(char **)(thiz + 8) = mNmea;
+  *(int *)(thiz + 12) = len;
+  strlcpy(mNmea,data,len+1);
+  //  if (loc_logger == 5) {
+  //    __android_log_print(6,"LocSvc_eng","V/LocEngReportNmea",&loc_logger,iVar1);
+  //  }
+  return thiz;
+}
+
+extern "C" {
 //  ssize_t _ZNK16LocEngReportNmea4procFf(void *thiz, void* locEng, const char* data, int len ) ;
   
-  ssize_t _ZNK16LocEngReportNmea4procEv(void *thiz, void* locEng, const char* data, int len ) {
-    static ssize_t (*fun)(void *, void*, const char*, int )=0;
-    if( fun==0) {
-      void *handle ;
-      char *error ;
-      handle = dlopen ("/system/vendor/lib/libloc_eng.so", RTLD_LAZY);
-      if( ! handle) exit(1) ;
-      fun = dlsym( handle, "_ZNK16LocEngReportNmea4procEv" ) ;
-      if ((error = dlerror()) != NULL)  {
-	//            fputs(error, stderr);
-            exit(1);
-        }
-    }
-    return (*fun)(thiz, locEng, data, len+1 ) ;
+  ssize_t *_ZNK16LocEngReportNmea4procEv( ssize_t *thiz, void* locEng, const char* data, int len ) {
+    return LocEngReportNmea_constructor( thiz, locEng, data, len ) ;
   }
-//}
+}
 
 #if 0
 
@@ -106,16 +113,16 @@ LocEngReportNmea * __thiscall
 LocEngReportNmea(LocEngReportNmea *this,void *locEng,char *data,int len)
 
 {
-  void *__dest;
+  void *mNmea;
   int iVar1;
   
   *(void **)(this + 4) = locEng;
   *(undefined4 *)this = 0x33470;
   iVar1 = len;
-  __dest = operator.new[](len);
-  *(void **)(this + 8) = __dest;
+  mNmea = operator.new[](len);
+  *(void **)(this + 8) = mNmea;
   *(int *)(this + 0xc) = len;
-  memcpy(__dest,data,len);
+  memcpy(mNmea,data,len);
   if (loc_logger == 5) {
     __android_log_print(6,"LocSvc_eng","V/LocEngReportNmea",&loc_logger,iVar1);
   }
